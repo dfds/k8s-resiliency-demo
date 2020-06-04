@@ -1,0 +1,5 @@
+target
+kube-rust-doom-build-cache
+.idea
+access.log
+k8s-traefik-stats/stresstest.sh

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: multinginx
+    kubedoom: y1
+  name: nm
+  namespace: demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: multinginx
+  template:
+    metadata:
+      labels:
+        app: multinginx
+        kubedoom: y1
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+          name: http-web

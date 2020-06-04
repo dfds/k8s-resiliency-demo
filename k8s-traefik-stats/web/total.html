@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="odometer.css" />
+    <script src="odometer.js"></script> 
+  </head>
+  <body>
+    <div style="display: flex; flex-direction:column; margin-left: 40px; font-size: 3.6em; color: #ffffff;">
+      <h3>Total:</h3>
+      <div><span>200s:</span> <span class="odometer" id="200">0</span></div>
+      <div>400s: <span class="odometer" id="400">0</span></div>
+      <div>500s: <span class="odometer" id="500">0</span></div>
+    </div>
+    <script>
+      var h200 = document.getElementById("200");
+      var h400 = document.getElementById("400");
+      var h500 = document.getElementById("500");
+
+      window.setInterval(function() {
+        var req = new XMLHttpRequest();
+        req.addEventListener("load", function(data) {
+          var resp = JSON.parse(req.responseText);
+          h200.innerText = resp.http_200_count;
+          h400.innerText = resp.http_400_count;
+          h500.innerText = resp.http_500_count;
+        });
+        req.open("GET", "http://127.0.0.1:3100");
+        req.send();
+
+      }, 1000);
+    </script>
+  </body>
+</html>

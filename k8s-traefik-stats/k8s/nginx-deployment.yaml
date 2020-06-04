@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: basenginx
+    kubedoom: y1
+  name: bn
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basenginx
+  template:
+    metadata:
+      labels:
+        app: basenginx
+        kubedoom: y1
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+          name: http-web

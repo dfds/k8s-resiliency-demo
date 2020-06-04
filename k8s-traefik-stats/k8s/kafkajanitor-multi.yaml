@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kj
+  namespace: demo
+  labels:
+    project: selfservice
+    department: devex
+    app: kafka-janitor
+    component: kafka-janitor
+    version: 0.0.1
+    kubedoom: y1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kafka-janitor
+  template:
+    metadata:
+      labels:
+        logging_dfds_cloud_format_json: "true"
+        app: kafka-janitor
+        project: selfservice
+        department: devex
+        kubedoom: y1
+      annotations:
+        iam.amazonaws.com/role: REMOVED
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
+    spec:
+      priorityClassName: selfservice
+      containers:
+      - name: kafka-janitor
+        image: sequoiia/ded_kafka-janitor:latest
+        ports:
+        - containerPort: 5000
+          name: web
+        - containerPort: 8080
+          name: metrics
+        env:
+        - name: TIKA_API_ENDPOINT
+          value: "http://localhost:3000"
+        - name: KAFKAJANITOR_VAULT
+          value: "INMEMORY"
+        - name: ASPNETCORE_URLS
+          value: http://+:5000
+        livenessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 5
+          httpGet:
+            port: web
+            path: /healthz
+        readinessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          httpGet:
+            port: web
+            path: /healthz
+      - name: tika
+        image: sequoiia/ded_tika:latest
+        env:
+        - name: TIKA_CCLOUD_CLUSTER_ID
+          value: xaxa
+        - name: TIKA_API_IMPLEMENTATION
+          value: notconnected

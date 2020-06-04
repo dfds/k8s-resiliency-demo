@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kts
+  name: kafkajanitor
+  namespace: demo
+spec:
+  ports:
+  - name: demoweb
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: kafka-janitor
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+  name: kafkajanitor
+  namespace: demo
+  labels:
+    version: v1
+spec:
+  rules:
+  - host: api.dfds.cloud
+    http:
+      paths:
+      - backend:
+          serviceName: kafkajanitor
+          servicePort: demoweb
+        path: /devexdemo/kafkajanitor
