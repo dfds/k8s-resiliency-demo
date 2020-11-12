@@ -20,7 +20,6 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: traefik
     traefik.frontend.rule.type: PathPrefixStrip
   name: nginx
   namespace: demo
