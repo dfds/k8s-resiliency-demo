@@ -6,7 +6,7 @@ COPY . .
 RUN mkdir /app
 RUN cargo install --root /app --path .
 
-FROM ubuntu:latest
+FROM ubuntu:20.04
 COPY --from=build /app /app
 
 ENTRYPOINT ["/app/bin/k8s-traefik-stats"]
