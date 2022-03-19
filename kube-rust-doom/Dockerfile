@@ -21,7 +21,7 @@ RUN cargo build --release
 RUN cargo install --root /app --path .
 
 # Final bundle 
-FROM ubuntu 
+FROM ubuntu:20.04 
 WORKDIR /app
 
 COPY --from=rustbuild /app/bin/kube-rust-doom .
